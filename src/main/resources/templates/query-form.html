@@ -29,9 +29,7 @@
   <!-- Basic table to display results without specifying column names -->
   <table th:if="${results}" class="table table-striped mt-4">
     <thead>
-    <tr>
-      <th th:each="header, iterStat : ${headers}" th:text="${header}">Header</th>
-    </tr>
+
     </thead>
     <tbody>
     <tr th:each="resultRow : ${results}">
