@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>RDF Graph Visualization</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f4f7fa;
+      font-family: 'Arial', sans-serif;
+    }
+    .container {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #cy {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 20px;
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>RDF Knowledge Graph</h1>
+  <p class="lead">Visualize the RDF data as an interactive knowledge graph.</p>
+  <div id="cy"></div>
+  <a href="/rdf-data" class="btn btn-secondary mt-3">Back to RDF View</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.0/cytoscape.min.js"></script>
+<script th:inline="javascript">
+  // Get the RDF data in JSON-LD format passed from the server
+  const rdfJsonLdData = /*[[${rdfJsonLdData}]]*/ '{}';
+
+  // Parse the JSON-LD data
+  const rdfData = JSON.parse(rdfJsonLdData);
+
+  // Convert the RDF JSON-LD data into a format suitable for Cytoscape.js
+  const elements = [];
+
+  // Extract nodes and edges from RDF data
+  rdfData['@graph'].forEach(node => {
+    // Add node
+    elements.push({
+      data: { id: node['@id'], label: node['name'] || node['@id'] }
+    });
+
+    // Add edges for each property
+    Object.keys(node).forEach(key => {
+      if (key.startsWith('@')) return; // Skip JSON-LD specific fields
+      if (Array.isArray(node[key])) {
+        node[key].forEach(target => {
+          elements.push({
+            data: {
+              source: node['@id'],
+              target: target['@id'],
+              label: key
+            }
+          });
+        });
+      } else if (typeof node[key] === 'object') {
+        elements.push({
+          data: {
+            source: node['@id'],
+            target: node[key]['@id'],
+            label: key
+          }
+        });
+      }
+    });
+  });
+
+  // Initialize Cytoscape.js
+  const cy = cytoscape({
+    container: document.getElementById('cy'), // container to render in
+    elements: elements,
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'background-color': '#007bff',
+          'label': 'data(label)',
+          'text-valign': 'center',
+          'color': '#fff',
+          'font-size': '10px'
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 2,
+          'line-color': '#ddd',
+          'target-arrow-color': '#ddd',
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier',
+          'label': 'data(label)',
+          'font-size': '8px'
+        }
+      }
+    ],
+    layout: {
+      name: 'cose', // Initial layout type
+      padding: 30 // Padding around the layout
+    },
+    maxZoom: 2, // Maximum zoom level to prevent excessive zooming
+    minZoom: 0.5, // Minimum zoom level to prevent excessive zoom out
+    wheelSensitivity: 0.1, // Control zoom sensitivity with the mouse wheel
+    userPanningEnabled: true // Allow user panning
+  });
+
+  // Center and fit the graph within the viewport
+  cy.fit(); // Adjusts to fit the viewport after initial render
+  cy.center(); // Centers the graph
+
+  // Add event listeners to keep the graph within bounds
+  cy.on('pan zoom', function() {
+    // Recenter the graph if it moves too far
+    const pan = cy.pan();
+    const zoom = cy.zoom();
+
+    // Adjust boundaries to prevent panning too far left/right or up/down
+    if (pan.x > 300 || pan.x < -300 || pan.y > 300 || pan.y < -300) {
+      cy.fit();
+      cy.center();
+    }
+  });
+</script>
+
+</body>
+</html>

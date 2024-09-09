@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Athletes List</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 1200px;
+    }
+    .table thead th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    .table td, .table th {
+      vertical-align: middle;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+    }
+    .btn-group form {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">Athletes List</h1>
+  <div class="mb-3">
+    <a href="/athletes/new" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add New Athlete
+    </a>
+    <a href="/query-form" class="btn btn-info ml-2" style="position: relative; left: 817px; top: 1px" >
+      <i class="fas fa-search" ></i> Go to Query Form
+    </a>
+
+    <a href="/rdf-data" class="btn btn-warning ml-2 btn-rdf">
+      <i class="fas fa-rss"></i> Transform to RDF
+    </a>
+  </div>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Sport</th>
+      <th>Birth Date</th>
+      <th>Country</th>
+      <th>Height</th>
+      <th>Weight</th>
+      <th>Team</th>
+      <th>Position</th>
+      <th>MVP Awards</th>
+      <th>Jersey Number</th>
+      <th>Career Goals</th>
+      <th>Career Matches</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="athlete : ${athletes}">
+      <td th:text="${athlete.id}"></td>
+      <td th:text="${athlete.name}"></td>
+      <td th:text="${athlete.sportLabel}"></td>
+      <td th:text="${athlete.birthDate}"></td>
+      <td th:text="${athlete.country}"></td>
+      <td>
+        <span th:text="${athlete.height != 'Unknown' ? athlete.height + ' cm' : 'Unknown'}"></span>
+      </td>
+      <td>
+        <span th:text="${athlete.weight != 'Unknown' ? athlete.weight + ' kg' : 'Unknown'}"></span>
+      </td>
+      <td th:text="${athlete.team}"></td>
+      <td th:text="${athlete.position}"></td>
+      <td th:text="${athlete.mvpAwards}"></td>
+      <td th:text="${athlete.jerseyNumber}"></td>
+      <td>
+        <span th:text="${athlete.careerGoals}"></span>
+      </td>
+      <td>
+        <span th:text="${athlete.careerMatches}"></span>
+      </td>
+      <td>
+        <div class="btn-group" role="group">
+
+          <a th:href="@{/athletes/{id}/pie-chart(id=${athlete.id})}" class="btn btn-primary btn-sm" title="View Pie Chart">
+            <i class="fas fa-chart-pie"></i>
+          </a>
+          <a th:href="@{/athletes/{id}(id=${athlete.id})}" class="btn btn-info btn-sm" title="View">
+            <i class="fas fa-eye"></i>
+          </a>
+          <a th:href="@{/athletes/{id}/edit(id=${athlete.id})}" class="btn btn-warning btn-sm" title="Edit">
+            <i class="fas fa-pencil-alt"></i>
+          </a>
+          <form th:action="@{/athletes/{id}/delete(id=${athlete.id})}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

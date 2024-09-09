@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>New Athlete</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 800px;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-group label {
+      font-weight: bold;
+    }
+    .btn {
+      margin-right: 10px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+    .form-control {
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="mb-4">Add New Athlete</h1>
+  <form th:action="@{/athletes}" th:object="${athlete}" method="post">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" class="form-control" th:field="*{name}" required />
+    </div>
+    <div class="form-group">
+      <label for="sportLabel">Sport</label>
+      <input type="text" id="sportLabel" name="sportLabel" class="form-control" th:field="*{sportLabel}" required />
+    </div>
+    <div class="form-group">
+      <label for="birthDate">Birth Date</label>
+      <input type="date" id="birthDate" name="birthDate" class="form-control" th:field="*{birthDate}" />
+    </div>
+    <div class="form-group">
+      <label for="country">Country</label>
+      <input type="text" id="country" name="country" class="form-control" th:field="*{country}" />
+    </div>
+    <div class="form-group">
+      <label for="height">Height (cm)</label>
+      <input type="number" id="height" name="height" class="form-control" th:field="*{height}" />
+    </div>
+    <div class="form-group">
+      <label for="weight">Weight (kg)</label>
+      <input type="number" id="weight" name="weight" class="form-control" th:field="*{weight}" />
+    </div>
+    <div class="form-group">
+      <label for="team">Team</label>
+      <input type="text" id="team" name="team" class="form-control" th:field="*{team}" />
+    </div>
+    <div class="form-group">
+      <label for="position">Position</label>
+      <input type="text" id="position" name="position" class="form-control" th:field="*{position}" />
+    </div>
+    <div class="form-group">
+      <label for="mvpAwards">MVP Awards</label>
+      <input type="number" id="mvpAwards" name="mvpAwards" class="form-control" th:field="*{mvpAwards}" />
+    </div>
+    <div class="form-group">
+      <label for="jerseyNumber">Jersey Number</label>
+      <input type="text" id="jerseyNumber" name="jerseyNumber" class="form-control" th:field="*{jerseyNumber}" />
+    </div>
+
+    <div class="form-group">
+      <label for="careerGoals">Career Goals</label>
+      <input type="number" id="careerGoals" name="careerGoals" class="form-control" th:field="*{careerGoals}" step="1"/>
+    </div>
+
+    <div class="form-group">
+      <label for="careerMatches">Career Matches</label>
+      <input type="number" id="careerMatches" name="careerMatches" class="form-control" th:field="*{careerMatches}" step="1"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+    <a href="/athletes" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+</body>
+</html>

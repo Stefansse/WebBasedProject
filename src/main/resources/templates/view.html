@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Athlete Details</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 800px;
+    }
+    .card {
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 1px solid #dee2e6;
+    }
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+      border-bottom: 1px solid #dee2e6;
+      border-radius: 10px 10px 0 0;
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .btn-secondary {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title">Athlete Details</h1>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <p><strong>ID:</strong> <span th:text="${athlete.id}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Name:</strong> <span th:text="${athlete.name}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Sport:</strong> <span th:text="${athlete.sportLabel}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Birth Date:</strong> <span th:text="${athlete.birthDate}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Country:</strong> <span th:text="${athlete.country}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Height:</strong> <span th:text="${athlete.height}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Weight:</strong> <span th:text="${athlete.weight}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Team:</strong> <span th:text="${athlete.team}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Position:</strong> <span th:text="${athlete.position}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>MVP Awards:</strong> <span th:text="${athlete.mvpAwards}"></span></p>
+        </div>
+        <div class="col-md-4">
+          <p><strong>Jersey Number:</strong> <span th:text="${athlete.jerseyNumber}"></span></p>
+        </div>
+      </div>
+      <a href="/athletes" class="btn btn-secondary">Back to List</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

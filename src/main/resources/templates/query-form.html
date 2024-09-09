@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>SPARQL Query Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Enter SPARQL Query</h1>
+  <form th:action="@{/run-query}" method="post">
+    <div class="form-group">
+      <textarea name="query" rows="10" cols="80" class="form-control" placeholder="Enter your SPARQL query here..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">
+      <i class="fas fa-play"></i>
+    </button>
+    <a href="/query-form" class="btn btn-secondary ml-2">
+      <i class="fas fa-sync-alt"></i>
+    </a>
+    <button type="button" class="btn btn-secondary ml-2" onclick="document.querySelector('textarea[name=query]').value = ''; if(document.querySelector('pre')) document.querySelector('pre').innerHTML = '';">
+      <i class="fas fa-eraser"></i>
+    </button>
+  </form>
+
+  <h2 class="mt-4">Results</h2>
+  <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+  <!-- Basic table to display results without specifying column names -->
+  <table th:if="${results}" class="table table-striped mt-4">
+    <thead>
+    <tr>
+      <th th:each="header, iterStat : ${headers}" th:text="${header}">Header</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="resultRow : ${results}">
+      <td th:each="value, iterStat : ${resultRow}" th:text="${value}">Value</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Button to transfer data to athlete table -->
+  <form id="transferForm" th:action="@{/athletes/transfer-data}" method="post" class="mt-4">
+    <input type="hidden" id="resultsInput" name="results">
+    <button type="submit" class="btn btn-success">
+      <i class="fas fa-upload"></i>
+    </button>
+  </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  // Function to serialize the results and set it to the hidden input field
+  function serializeResults() {
+    var results = [];
+    var headers = document.querySelectorAll('th');
+    var rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(function(row) {
+      var rowData = {};
+      row.querySelectorAll('td').forEach(function(cell, index) {
+        rowData[headers[index].innerText] = cell.innerText;
+      });
+      results.push(rowData);
+    });
+
+    document.getElementById('resultsInput').value = JSON.stringify(results);
+  }
+
+  // Add event listener to the transfer button to serialize results
+  document.querySelector('.btn-success').addEventListener('click', function() {
+    serializeResults();
+  });
+</script>
+</body>
+</html>

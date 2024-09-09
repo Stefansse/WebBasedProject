@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Athletes</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Athletes</h1>
+  <a href="/athletes/new" class="btn btn-primary">Add New Athlete</a>
+  <table class="table mt-3">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Sport</th>
+      <th>Birth Date</th>
+      <th>Country</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="athlete : ${athletes}">
+      <td th:text="${athlete.id}"></td>
+      <td th:text="${athlete.name}"></td>
+      <td th:text="${athlete.sportLabel}"></td>
+      <td th:text="${athlete.birthDate}"></td>
+      <td th:text="${athlete.country}"></td>
+      <td>
+        <a th:href="@{/athletes/{id}(id=${athlete.id})}" class="btn btn-info btn-sm">View</a>
+        <a th:href="@{/athletes/{id}/edit(id=${athlete.id})}" class="btn btn-warning btn-sm">Edit</a>
+        <form th:action="@{/athletes/{id}/delete(id=${athlete.id})}" method="post" style="display:inline;">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

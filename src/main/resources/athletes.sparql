@@ -1,0 +1,16 @@
+SELECT ?athlete ?athleteLabel ?birthDate ?teamLabel ?positionLabel ?careerStart ?careerEnd WHERE {
+  ?athlete wdt:P31 wd:Q5;         # Instance of Human
+          wdt:P106 wd:Q2041;      # Occupation: Basketball player
+          wdt:P54 ?team;         # Team
+          wdt:P413 ?position.   # Position
+
+  # Optional properties
+  OPTIONAL { ?athlete wdt:P569 ?birthDate. }            # Birth date
+  OPTIONAL { ?athlete wdt:P54 ?team. }                  # Team
+  OPTIONAL { ?athlete wdt:P413 ?position. }             # Position
+  OPTIONAL { ?athlete wdt:P571 ?careerStart. }          # Career start
+  OPTIONAL { ?athlete wdt:P576 ?careerEnd. }            # Career end
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+LIMIT 10
